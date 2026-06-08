@@ -27,14 +27,14 @@ spec:
     strategy:
       name: RetryOnFailure # retry failed installations instead of uninstalling
       retryInterval: 5m # retry failed installations every five minutes
-    upgrade:
-      crds: CreateReplace # update CRDs when upgrading
-      strategy:
-        name: RetryOnFailure # retry failed upgrades instead of rollback
-        retryInterval: 5m # retry failed upgrades every five minutes
-    chartRef:
-      kind: OCIRepository
-      name: prometheus-stack
+  upgrade:
+    crds: CreateReplace # update CRDs when upgrading
+    strategy:
+      name: RetryOnFailure # retry failed upgrades instead of rollback
+      retryInterval: 5m # retry failed upgrades every five minutes
+  chartRef:
+    kind: OCIRepository
+    name: prometheus-stack
   values:
     fullnameOverride: "prometheus-stack"
     nameOverride: "prometheus-stack"
