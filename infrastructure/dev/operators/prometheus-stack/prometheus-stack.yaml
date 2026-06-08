@@ -1,0 +1,93 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: prometheus-stack
+  namespace: flux-system
+spec:
+  interval: 24h
+  url: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
+  layerSelector:
+    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
+    operation: copy
+  ref:
+    tag: "86.2.0"
+---
+kind: HelmRelease
+apiVersion: helm.toolkit.fluxcd.io/v2
+metadata:
+  name: prometheus-stack
+  namespace: flux-system
+spec:
+  maxHistory: 3
+  interval: 30m # run drift detection every 30 minutes
+  driftDetection:
+    mode: enabled # undo kubectl edits and other unintended changes
+  install:
+    strategy:
+      name: RetryOnFailure # retry failed installations instead of uninstalling
+      retryInterval: 5m # retry failed installations every five minutes
+    upgrade:
+      crds: CreateReplace # update CRDs when upgrading
+      strategy:
+        name: RetryOnFailure # retry failed upgrades instead of rollback
+        retryInterval: 5m # retry failed upgrades every five minutes
+    chartRef:
+      kind: OCIRepository
+      name: prometheus-stack
+  values:
+    fullnameOverride: "prometheus-stack"
+    nameOverride: "prometheus-stack"
+
+    alertmanager:
+      enabled: true
+
+    grafana:
+      enabled: false
+
+    prometheus:
+      enabled: true
+      prometheusSpec:
+        enableAdminAPI: true
+        enableRemoteWriteReceiver: true
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              resources:
+                requests:
+                  storage: 20Gi
+        ruleSelectorNilUsesHelmValues: false
+        ruleSelector:
+          matchLabels:
+            app.kubernetes.io/managed-by: Helm
+        serviceMonitorSelectorNilUsesHelmValues: false
+        serviceMonitorSelector:
+          matchLabels:
+            app.kubernetes.io/managed-by: Helm
+        podMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelector:
+          matchLabels:
+            app.kubernetes.io/managed-by: Helm
+        podMonitorNamespaceSelector: {}
+        replicas: 1
+
+    prometheusOperator:
+      enabled: true
+    kubeStateMetrics:
+      enabled: true
+    kubeApiServer:
+      enabled: true
+    kubelet:
+      enabled: true
+    kubeControllerManager:
+      enabled: false
+    coreDns:
+      enabled: false
+    kubeDns:
+      enabled: true
+    kubeEtcd:
+      enabled: false
+    kubeScheduler:
+      enabled: false
+    kubeProxy:
+      enabled: true
