@@ -27,6 +27,7 @@ spec:
     strategy:
       name: RetryOnFailure # retry failed installations instead of uninstalling
       retryInterval: 5m # retry failed installations every five minutes
+    createNamespace: true
   upgrade:
     crds: CreateReplace # update CRDs when upgrading
     strategy:
