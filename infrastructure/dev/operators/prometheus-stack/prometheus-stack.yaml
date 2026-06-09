@@ -61,7 +61,31 @@ spec:
                   storage: 20Gi
 
     grafana:
-      enabled: false
+      enabled: true
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        paths: [ "/", "/*" ]
+        hosts:
+          - grafana.192.168.49.2.nip.io  # minikube ip -p dev
+      forceDeployDashboards: true
+      defaultDashboardsEditable: false
+      sidecar:
+        dashboards:
+          enabled: true
+          searchNamespace: ALL
+          watchMethod: WATCH
+          multicluster:
+            global:
+              enabled: false
+        datasources:
+          enabled: true
+          searchNamespace: ALL
+          reloadURL: "http://prometheus-stack-grafana.observability.svc.cluster.local/api/admin/provisioning/datasources/reload"
+      grafana.ini:
+        users:
+          default_theme: dark
+          auto_assign_org_role: Editor
 
     prometheus:
       enabled: true
