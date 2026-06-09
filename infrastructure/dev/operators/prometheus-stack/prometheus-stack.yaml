@@ -43,12 +43,34 @@ spec:
 
     alertmanager:
       enabled: true
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        paths: [ "/", "/*" ]
+        hosts:
+          - alertmanager.192.168.49.2.nip.io  # minikube ip -p dev
+      alertmanagerSpec:
+        logLevel: info
+        replicas: 1
+        retention: 120h
+        storage:
+          volumeClaimTemplate:
+            spec:
+              resources:
+                requests:
+                  storage: 20Gi
 
     grafana:
       enabled: false
 
     prometheus:
       enabled: true
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        paths: [ "/", "/*" ]
+        hosts:
+          - prometheus.192.168.49.2.nip.io  # minikube ip -p dev
       prometheusSpec:
         enableAdminAPI: true
         enableRemoteWriteReceiver: true
