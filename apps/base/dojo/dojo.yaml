@@ -32,7 +32,7 @@ spec:
       retryInterval: 5m # retry failed upgrades every five minutes
   chart:
     spec:
-      chart: chart # path to the chart directory on dojo git repo
+      chart: ./chart # path to the chart directory on dojo git repo
       sourceRef:
         kind: GitRepository
         name: flux-system
