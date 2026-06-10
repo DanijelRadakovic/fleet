@@ -1,6 +1,8 @@
-fullnameOverride: "dojo"
-nameOverride: "dojo"
-
-diagnosticMode:
-  enabled: true
-
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dojo
+spec:
+  values:
+    diagnosticMode:
+      enabled: true
