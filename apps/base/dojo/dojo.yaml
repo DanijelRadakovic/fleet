@@ -28,9 +28,12 @@ spec:
     strategy:
       name: RetryOnFailure # retry failed upgrades instead of rollback
       retryInterval: 5m # retry failed upgrades every five minutes
-  chartRef:
-    kind: HelmRepository
-    name: dojo
+  chart:
+    spec:
+      chart: dojo
+      sourceRef:
+        kind: HelmRepository
+        name: flux-system
   targetNamespace: dojo
   values:
     fullnameOverride: "dojo"
