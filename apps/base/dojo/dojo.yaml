@@ -35,7 +35,8 @@ spec:
       chart: ./chart # path to the chart directory on dojo git repo
       sourceRef:
         kind: GitRepository
-        name: flux-system
+        name: dojo
+        namespace: flux-system
   targetNamespace: dojo
   values:
     fullnameOverride: "dojo"
