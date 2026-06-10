@@ -1,0 +1,6 @@
+fullnameOverride: "dojo"
+nameOverride: "dojo"
+
+diagnosticMode:
+  enabled: true
+

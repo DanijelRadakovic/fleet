@@ -1,0 +1,37 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: dojo
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  url: https://github.com/DanijelRadakovic/dojo
+---
+kind: HelmRelease
+apiVersion: helm.toolkit.fluxcd.io/v2
+metadata:
+  name: dojo
+  namespace: flux-system
+spec:
+  maxHistory: 3
+  interval: 30m # run drift detection every 30 minutes
+  driftDetection:
+    mode: enabled # undo kubectl edits and other unintended changes
+  install:
+    strategy:
+      name: RetryOnFailure # retry failed installations instead of uninstalling
+      retryInterval: 5m # retry failed installations every five minutes
+    createNamespace: true
+  upgrade:
+    crds: CreateReplace # update CRDs when upgrading
+    strategy:
+      name: RetryOnFailure # retry failed upgrades instead of rollback
+      retryInterval: 5m # retry failed upgrades every five minutes
+  chartRef:
+    kind: HelmRepository
+    name: dojo
+  targetNamespace: dojo
+  values:
+    fullnameOverride: "dojo"
+    nameOverride: "dojo"
