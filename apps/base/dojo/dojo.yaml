@@ -1,12 +1,14 @@
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+kind: GitRepository
 metadata:
   name: dojo
   namespace: flux-system
 spec:
-  interval: 5m0s
+  interval: 1m
   url: https://github.com/DanijelRadakovic/dojo
+  ref:
+    branch: master
 ---
 kind: HelmRelease
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -30,9 +32,9 @@ spec:
       retryInterval: 5m # retry failed upgrades every five minutes
   chart:
     spec:
-      chart: dojo
+      chart: chart # path to the chart directory on dojo git repo
       sourceRef:
-        kind: HelmRepository
+        kind: GitRepository
         name: flux-system
   targetNamespace: dojo
   values:
