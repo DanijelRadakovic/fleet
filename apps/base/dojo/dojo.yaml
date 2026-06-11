@@ -21,15 +21,20 @@ spec:
   driftDetection:
     mode: enabled # undo kubectl edits and other unintended changes
   install:
-    strategy:
-      name: RetryOnFailure # retry failed installations instead of uninstalling
-      retryInterval: 5m # retry failed installations every five minutes
     createNamespace: true
+    strategy:
+      name: RemediateOnFailure # rollback the changes if they failed, preferred strategy for stateless workloads
+      retryInterval: 5m # retry failed installations after five minutes
+    remediation:
+      retries: 3 # number of retries that should be attempted on failures before bailing
   upgrade:
     crds: CreateReplace # update CRDs when upgrading
     strategy:
-      name: RetryOnFailure # retry failed upgrades instead of rollback
-      retryInterval: 5m # retry failed upgrades every five minutes
+      name: RemediateOnFailure # rollback the changes if they failed, preferred strategy for stateless workloads
+      retryInterval: 5m # retry failed upgrades after five minutes
+    remediation:
+      retries: 3 # number of retries that should be attempted on failures before bailing
+      strategy: rollback
   chart:
     spec:
       chart: ./chart # path to the chart directory on dojo git repo
