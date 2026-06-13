@@ -6,8 +6,8 @@ metadata:
 spec:
   values:
     extraEnvVars:
-      - DB_ENDPOINT: postgres-rw.dojo
-      - DB_PORT: 5432
-      - DB_NAME: dojo
-      - DB_USER: dojo
-      - DB_PASS: 7PtQTNX3nZa3qnUVXFMJHjMu7fZT9P8AoxaaHAsAu2znxizkuimLYqiEbS2Tn5g6
+      DB_ENDPOINT: postgres-rw.dojo
+      DB_PORT: 5432
+      DB_NAME: dojo
+      DB_USER: dojo
+      DB_PASS: 7PtQTNX3nZa3qnUVXFMJHjMu7fZT9P8AoxaaHAsAu2znxizkuimLYqiEbS2Tn5g6
