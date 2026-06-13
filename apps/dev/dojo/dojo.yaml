@@ -15,4 +15,4 @@ spec:
       - name: DB_USER
         value: dojo
       - name: DB_PASS
-        value: 7PtQTNX3nZa3qnUVXFMJHjMu7fZT9P8AoxaaHAsAu2znxizkuimLYqiEbS2Tn5g6
+        value: "7PtQTNX3nZa3qnUVXFMJHjMu7fZT9P8AoxaaHAsAu2znxizkuimLYqiEbS2Tn5g6"
