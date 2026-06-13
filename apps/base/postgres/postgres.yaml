@@ -1,0 +1,62 @@
+---
+kind: HelmRelease
+apiVersion: helm.toolkit.fluxcd.io/v2
+metadata:
+  name: postgres
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cnpg
+  maxHistory: 3
+  interval: 30m # run drift detection every 30 minutes
+  driftDetection:
+    mode: enabled # undo kubectl edits and other unintended changes
+  install:
+    strategy:
+      name: RetryOnFailure # retry failed installations instead of uninstalling
+      retryInterval: 5m # retry failed installations every five minutes
+    createNamespace: true
+  upgrade:
+    crds: CreateReplace # update CRDs when upgrading
+    strategy:
+      name: RetryOnFailure # retry failed upgrades instead of rollback
+      retryInterval: 5m # retry failed upgrades every five minutes
+  chart:
+    spec:
+      chart: cluster
+      version: '0.6.1'
+      sourceRef:
+        kind: HelmRepository
+        name: cnpg
+      interval: 24h
+  targetNamespace: postgres
+  values:
+    nameOverride: "postgres"
+    fullnameOverride: "postgres"
+    type: postgresql
+    version:
+      postgresql: "16"
+    mode: standalone
+
+    cluster:
+      instances: 1
+      # -- Image pull policy. One of Always, Never or IfNotPresent. If not defined, it defaults to IfNotPresent. Cannot be updated.
+      # More info: https://kubernetes.io/docs/concepts/containers/images#updating-images
+      imagePullPolicy: IfNotPresent
+      storage:
+        size: 8Gi
+
+      walStorage:
+        enabled: false
+        size: 1Gi
+        storageClass: ""
+
+      monitoring:
+        enabled: true
+        podMonitor:
+          enabled: true
+        prometheusRule:
+          enabled: true
+          # -- Exclude specified rules
+          excludeRules: [ ]
+          # - CNPGClusterZoneSpreadWarning

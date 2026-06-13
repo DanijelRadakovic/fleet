@@ -1,0 +1,18 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: postgres
+  namespace: flux-system
+spec:
+  targetNamespace: dojo
+  values:
+    cluster:
+      storage:
+        size: 1Gi
+
+    initdb:
+      database: dojo
+      owner: dojo
+      postInitApplicationSQL:
+        - CREATE TABLE weapons(id text not null, name text not null,PRIMARY KEY(id));
+        - ALTER TABLE weapons OWNER TO dojo;
