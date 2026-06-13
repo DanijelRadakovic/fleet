@@ -1,0 +1,47 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: cnpg
+  namespace: flux-system
+spec:
+  interval: 24h
+  url: https://cloudnative-pg.github.io/charts
+---
+kind: HelmRelease
+apiVersion: helm.toolkit.fluxcd.io/v2
+metadata:
+  name: cnpg
+  namespace: flux-system
+spec:
+  maxHistory: 3
+  interval: 30m # run drift detection every 30 minutes
+  driftDetection:
+    mode: enabled # undo kubectl edits and other unintended changes
+  install:
+    createNamespace: true
+    strategy:
+      name: RemediateOnFailure # rollback the changes if they failed, preferred strategy for stateless workloads
+      retryInterval: 5m # retry failed installations after five minutes
+    remediation:
+      retries: 3 # number of retries that should be attempted on failures before bailing
+  upgrade:
+    crds: CreateReplace # update CRDs when upgrading
+    strategy:
+      name: RemediateOnFailure # rollback the changes if they failed, preferred strategy for stateless workloads
+      retryInterval: 5m # retry failed upgrades after five minutes
+    remediation:
+      retries: 3 # number of retries that should be attempted on failures before bailing
+      strategy: rollback
+  chart:
+    spec:
+      chart: cloudnative-pg
+      version: '0.28.3'
+      sourceRef:
+        kind: HelmRepository
+        name: cnpg
+      interval: 24h
+  targetNamespace: cnpg-system
+  values:
+    monitoring:
+      podMonitorEnabled: true
