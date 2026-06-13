@@ -28,7 +28,6 @@ spec:
     crds: CreateReplace # update CRDs when upgrading
     strategy:
       name: RemediateOnFailure # rollback the changes if they failed, preferred strategy for stateless workloads
-      retryInterval: 5m # retry failed upgrades after five minutes
     remediation:
       retries: 3 # number of retries that should be attempted on failures before bailing
       strategy: rollback
