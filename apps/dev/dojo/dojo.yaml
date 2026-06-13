@@ -7,7 +7,7 @@ spec:
   values:
     extraEnvVars:
       - name: DB_ENDPOINT
-        value: postgres-rw.dojo
+        value: postgres-rw
       - name: DB_PORT
         value: "5432"
       - name: DB_NAME
