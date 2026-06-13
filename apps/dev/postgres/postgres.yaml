@@ -10,9 +10,9 @@ spec:
       storage:
         size: 1Gi
 
-    initdb:
-      database: dojo
-      owner: dojo
-      postInitApplicationSQL:
-        - CREATE TABLE weapons(id text not null, name text not null,PRIMARY KEY(id));
-        - ALTER TABLE weapons OWNER TO dojo;
+      initdb:
+        database: dojo
+        owner: dojo
+        postInitApplicationSQL:
+          - CREATE TABLE weapons(id text not null, name text not null,PRIMARY KEY(id));
+          - ALTER TABLE weapons OWNER TO dojo;
