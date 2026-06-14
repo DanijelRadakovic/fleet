@@ -26,3 +26,10 @@ spec:
         value: dojo
       - name: DB_PASS
         value: "7PtQTNX3nZa3qnUVXFMJHjMu7fZT9P8AoxaaHAsAu2znxizkuimLYqiEbS2Tn5g6"
+
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      paths: [ "/", "/*" ]
+      hosts:
+        - dojo.192.168.49.2.nip.io  # minikube ip -p dev
