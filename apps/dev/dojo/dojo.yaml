@@ -5,7 +5,16 @@ metadata:
   namespace: flux-system
 spec:
   values:
-    workingDir: "/tmp"
+    extraVolumes:
+      - name: tmp
+        emptyDir: { }
+
+    extraVolumeMounts:
+      - name: tmp
+        mountPath: /tmp
+
+    workingDir: /tmp
+
     extraEnvVars:
       - name: DB_ENDPOINT
         value: postgres-rw
