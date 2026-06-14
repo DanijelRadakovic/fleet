@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   values:
-    workingDir: /tmp
+    workingDir: "/tmp"
     extraEnvVars:
       - name: DB_ENDPOINT
         value: postgres-rw
