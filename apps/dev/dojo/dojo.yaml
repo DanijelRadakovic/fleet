@@ -30,5 +30,10 @@ spec:
     ingress:
       enabled: true
       ingressClassName: nginx
-      paths: [ "/", "/*" ]
+      path: /
+      extraPaths:
+        path: "/*"
+        backend:
+          serviceName: dojo
+          servicePort: http
       hostname: dojo.192.168.49.2.nip.io  # minikube ip -p dev
