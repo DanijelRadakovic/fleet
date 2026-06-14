@@ -31,5 +31,4 @@ spec:
       enabled: true
       ingressClassName: nginx
       paths: [ "/", "/*" ]
-      hosts:
-        - dojo.192.168.49.2.nip.io  # minikube ip -p dev
+      hostname: dojo.192.168.49.2.nip.io  # minikube ip -p dev
